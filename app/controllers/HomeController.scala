@@ -28,22 +28,6 @@ class HomeController @Inject()(cc: ControllerComponents, ws: WSClient) (implicit
 
   private lazy val url = "https://api.github.com/users/octocat/repos"
 
-  def githubb = Action.async {
-    ws.url("https://api.ipify.org/?format=json").get().map { response =>
-
-      val a = (response.json \ "ip").as[String]
-      println(s"a is $a")
-      Ok(a)
-    }
-  }
-
-  def githuba = Action {
-    lazy val j = Json.parse("""[{"id": 123},{"id": 345}]""")
-    lazy val k = (j \\ "id").map(_.as[Int])
-    k.map(x => println(s"k is: ${x+1}"))
-    Ok(Json.toJson(k))
-  }
-
   def github = Action.async {
 
     ws.url(url).get().map { response =>
@@ -63,11 +47,11 @@ class HomeController @Inject()(cc: ControllerComponents, ws: WSClient) (implicit
         }
       }
 
-      details onComplete {
-        case Success(des) => des
-      }
+//      details onComplete {
+//        case Success(des) => des
+//      }
 
-      Ok(Json.prettyPrint(resJson.as[JsObject] + ("a" -> Json.toJson(details))))
+      Ok(Json.prettyPrint(resJson/*.as[JsObject] + ("a" -> Json.toJson(details))*/))
     }
   }
 
