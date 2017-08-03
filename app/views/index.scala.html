@@ -1,0 +1,29 @@
+@()
+<!doctype html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+  </head>
+
+  <body>
+    <center>
+      <input name="repo" id="input">
+      <button onclick="call()">get</button>
+      <p id="content"></p>
+    </center>
+
+    <script type="text/javascript">
+      var url = "http://localhost:9000/"
+      function call() {
+        var input = document.getElementById('input').value;
+        fetch(url+input)
+		      .then(function(res) {return res.json();})
+		      .then(function(data) {
+			      document.getElementById('content').innerHTML = data;
+		      })
+		      .catch(function(err) {console.log('err', err);});
+      }
+    </script>
+  </body>
+</html>
