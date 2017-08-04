@@ -26,32 +26,43 @@ class HomeController @Inject()(cc: ControllerComponents, ws: WSClient) (implicit
     Ok(views.html.index())
   }
 
-  private lazy val url = "https://api.github.com/users/octocat/repos"
 
-  def github = Action.async {
+  def github(user: String) = Action.async {
+
+    lazy val url = s"https://api.github.com/users/$user/repos"
 
     ws.url(url).get().map { response =>
 
-      val contributors = (response.json \\ "contributors_url").map(_.as[String])
-      val languages = (response.json \\ "languages_url").map(_.as[String])
+//      val contributors = (response.json \\ "contributors_url").map(_.as[String])
+//      val languages = (response.json \\ "languages_url").map(_.as[String])
 
       val resJson = response.json
 
-      val urls = contributors ++ languages
-      val innerJson = urls.map(ws.url)
-      val futureResponses = Future.sequence(innerJson.map(_.get()))
-
-      val details = futureResponses.map { responses =>
-        responses.map { rs =>
-          rs.body
-        }
-      }
-
-//      details onComplete {
-//        case Success(des) => des
+      Ok(resJson)
+//
+//      val urls = contributors ++ languages
+//      val innerJson = urls.map(ws.url)
+//      val futureResponses = Future.sequence(innerJson.map(_.get()))
+//
+//      val details = futureResponses.map { responses =>
+//        val k = responses.map { rs =>
+//          rs.body
+//        }
+//        println(s"k: ${k}")
 //      }
 
-      Ok(Json.prettyPrint(resJson/*.as[JsObject] + ("a" -> Json.toJson(details))*/))
+
+//        details onSuccess {
+//          case des => println("success")
+//        }
+//
+//        details onFailure {
+//          case fail => Ok(s"fail to get data: ${fail}")
+//        }
+
+
+
+//      Ok(Json.prettyPrint(resJson/*.as[JsObject] + ("a" -> Json.toJson(details))*/))
     }
   }
 

@@ -1,6 +1,6 @@
 GET        /                       controllers.HomeController.index
 
-GET        /github                 controllers.HomeController.github
+GET        /github/:user           controllers.HomeController.github(user: String )
 
 ->         /v1/posts               v1.post.PostRouter
 
