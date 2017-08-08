@@ -16,13 +16,15 @@ class FunctionalSpec extends PlaySpec with GuiceOneAppPerSuite {
 
   "Routes" should {
 
+    def urlMustBeStatus(url: String, resCode: Int) = req(url).map(status(_)) mustBe Some(resCode)
+
     "send 400 on a bad request" in  {
-      req("/whatever").map(status(_)) mustBe Some(NOT_FOUND)
+      urlMustBeStatus("/whatever", NOT_FOUND)
     }
 
     "send 200 on a good request" in  {
-      req("/").map(status(_)) mustBe Some(OK)
-      req("/github/octocat").map(status(_)) mustBe Some(OK)
+      urlMustBeStatus("/", OK)
+      urlMustBeStatus("/github/octocat", OK)
     }
 
   }
