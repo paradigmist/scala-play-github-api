@@ -19,6 +19,11 @@ libraryDependencies += ws
 libraryDependencies += ehcache
 libraryDependencies += "com.47deg" %% "github4s" % "0.15.0"
 
+libraryDependencies ++= Seq(
+  specs2 % Test,
+  "org.scalatestplus.play" %% "scalatestplus-play" % "3.0.0-M3" % Test
+)
+
 val json4sNative = "org.json4s" %% "json4s-native" % "{latestVersion}"
 
 // The Play project itself
